@@ -39,12 +39,8 @@ public class ScoreService {
             throw new ForbiddenActionException("Authentication is required to submit scores");
         }
 
-        UserEntity user = userRepository.findById(request.playerId())
+        UserEntity user = userRepository.findUserByUsername(authenticatedUsername)
                 .orElseThrow(() -> new ResourceNotFoundException("Player not found"));
-
-        if (!Objects.equals(user.getUsername(), authenticatedUsername)) {
-            throw new ForbiddenActionException("You can only submit scores for your own account");
-        }
 
         GameEntity game = gameRepository.findById(request.gameId())
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
